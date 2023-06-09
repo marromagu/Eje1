@@ -4,6 +4,7 @@
  */
 package Empleados;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 
@@ -11,7 +12,7 @@ import java.util.Calendar;
  *
  * @author JMRivera
  */
-public class Fecha implements Comparable{
+public class Fecha implements Comparable, Serializable{
   private int dia;
   private int mes;
   private int año;

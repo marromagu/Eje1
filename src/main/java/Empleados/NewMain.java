@@ -3,6 +3,11 @@
  */
 package Empleados;
 
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.Collections;
 import java.util.Scanner;
 
 /**
@@ -14,9 +19,13 @@ public class NewMain {
     public static void main(String[] args) {
         // TODO code application logic here
         Scanner r = new Scanner(System.in);
-        Empresa miEmpresa = new Empresa();
+
         int opcion = menu();
         int cod, op;
+        Empresa miEmpresa = cargarFichero();
+        if (miEmpresa == null) {
+            miEmpresa = new Empresa();
+        }
         while (opcion != 0) {
             switch (opcion) {
                 case 1:
@@ -42,7 +51,10 @@ public class NewMain {
                                 miEmpresa.ordenarLista(new ordenarPorNombre());
                             }
                             case 5 -> {
-                                miEmpresa.ordenarLista(new ordenarPorSalario());
+                                //miEmpresa.ordenarLista(new ordenarPorSalario());
+                                //Ordenar al reves
+                                miEmpresa.ordenarLista(Collections.reverseOrder(new ordenarPorSalario()));
+
                             }
                         }
                         op = menu2();
@@ -114,6 +126,7 @@ public class NewMain {
             }
             opcion = menu();
         }
+        miEmpresa.guardarFichero();
 
     }
 
@@ -160,5 +173,29 @@ public class NewMain {
         op = r.nextInt();
 
         return op;
+    }
+
+    public static Empresa cargarFichero() {
+        FileInputStream fichero = null;
+        ObjectInputStream entrada = null;
+        Empresa miEmpresa = null;
+        try {
+            fichero = new FileInputStream("Empleados.dat");
+            entrada = new ObjectInputStream(fichero);
+            miEmpresa = (Empresa) entrada.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("No existe el fichero Empleados.dat");
+        } finally {
+            try {
+                if (fichero != null) {
+                    fichero.close();
+                }
+                if (entrada != null) {
+                    entrada.close();
+                }
+            } catch (IOException e) {
+            }
+        }
+        return miEmpresa;
     }
 }

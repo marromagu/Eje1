@@ -5,8 +5,11 @@
 package Empleados;
 
 import java.io.BufferedReader;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -16,7 +19,7 @@ import java.util.HashMap;
  *
  * @author DAM_T
  */
-public class Empresa {
+public class Empresa implements Serializable{
 
     private String nombreE;
     private HashMap<Integer, Empleado> miEmpresa;
@@ -63,7 +66,7 @@ public class Empresa {
         System.out.println(toString());
         System.out.println("KEY | COD | FECHANAC | FECHAING | SALARIO | NUMHIJ | NOMBRE | APELLIDOS\n");
         for (Integer value : miEmpresa.keySet()) {
-            System.out.println(value+" "+miEmpresa.get(value));
+            System.out.println(value + " " + miEmpresa.get(value));
         }
     }
 
@@ -79,6 +82,9 @@ public class Empresa {
         Collections.sort(miEmpresaArray, criterio);
         for (Empleado empleado : miEmpresaArray) {
             System.out.println(empleado);
+            //Para ordenar al reves
+            //Collections.reverse(miEmpresaArray);
+            //Collections.sort(miEmpresaArray, Collections.reverseOrder(criterio));
         }
     }
 
@@ -115,4 +121,25 @@ public class Empresa {
         System.out.println("Empleado modificado: " + miEmpresa.get(cod).toString());
     }
 
+    public void guardarFichero() {
+        FileOutputStream fichero = null;
+        ObjectOutputStream salida = null;
+        try {
+            fichero = new FileOutputStream("Empleados.dat");
+            salida = new ObjectOutputStream(fichero);
+            salida.writeObject(this);
+        } catch (IOException e) {
+            System.out.println("Error guardando fichero");
+        } finally {
+            try {
+                if (fichero != null) {
+                    fichero.close();
+                }
+                if (salida != null) {
+                    salida.close();
+                }
+            } catch (IOException e) {
+            }
+        }
+    }
 }

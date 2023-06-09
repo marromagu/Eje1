@@ -4,13 +4,14 @@
  */
 package Empleados;
 
+import java.io.Serializable;
 import java.util.Scanner;
 
 /**
  *
  * @author DAM_T
  */
-public class Empleado implements Comparable<Empleado> {
+public class Empleado implements Comparable<Empleado>, Serializable {
 
     //COD FECHANAC FECHAING SALARIO NUMHIJ NOMBRE
     private int cod;
